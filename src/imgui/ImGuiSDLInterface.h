@@ -6,8 +6,8 @@
 #define IMGUI_SW_RENDERER__IMGUISDLINTERFACE_H
 
 #include <pf_imgui/ImGuiInterface.h>
-#include <pf_imgui/backends/impl/imgui_impl_sdl.h>
-#include <pf_imgui/backends/impl/imgui_impl_sdlrenderer.h>
+#include "impl/imgui_impl_sdl.h"
+#include "impl/imgui_impl_sdlrenderer.h"
 
 namespace pf::ui::ig {
 
@@ -25,11 +25,7 @@ class ImGuiSDLInterface final : public ImGuiInterface {
 
   void updateFonts() override;
 
-  /**
-   * This is required to be called for SDL events so the UI can be interacted with.
-   * @param event
-   */
-  void handleSDLEvent(const SDL_Event &event);
+  void processInput() override;
 
  protected:
   void newFrame_impl() override;

@@ -1,13 +1,13 @@
+#include "imgui/ImGuiSDLInterface.h"
 #include "utils/files.h"
 #include <SDL.h>
+#include <argparse/argparse.hpp>
 #include <fmt/format.h>
 #include <iostream>
-#include <pf_imgui/backends/ImGuiSDLInterface.h>
 #include <pf_imgui/elements/DragInput.h>
 #include <pf_mainloop/MainLoop.h>
-#include <toml++/toml.h>
 #include <spdlog/spdlog.h>
-#include <argparse/argparse.hpp>
+#include <toml++/toml.h>
 
 argparse::ArgumentParser createArgParser() {
   auto parser = argparse::ArgumentParser{"SDL imgui template"};
@@ -42,7 +42,7 @@ int main(int argc, char *argv[]) {
   auto parser = createArgParser();
   try {
     parser.parse_args(argc, argv);
-  } catch(const std::runtime_error &e) {
+  } catch (const std::runtime_error &e) {
     spdlog::error("{}", e.what());
     spdlog::info("{}", parser.help().str());
     return 1;
@@ -87,8 +87,8 @@ int main(int argc, char *argv[]) {
   auto &uiWindow = imguiInterface->createWindow(uniqueId(), "Window");
   uiWindow.createChild(Button::Config{.name = uniqueId(), .label = "Button", .size = Size::Auto()})
       .addClickListener([&] {
-        imguiInterface->getNotificationManager().createNotification(NotificationType::Info, uniqueId(),
-                                                                    "Button clicked");
+        [[maybe_unused]] auto &a = imguiInterface->getNotificationManager().createNotification(
+            NotificationType::Info, uniqueId(), "Button clicked");
       });
   uiWindow.createChild(DragInput<float>::Config{.name = uniqueId(),
                                                 .label = "Float",
@@ -96,16 +96,17 @@ int main(int argc, char *argv[]) {
                                                 .min = 0.f,
                                                 .max = 1000.f,
                                                 .value = 100.f,
-                                                .persistent = Persistent::Yes});
+                                                .persistent = true});
 
   imguiInterface->setStateFromConfig();
 
   SDL_Event event;
   pf::MainLoop::Get()->setOnMainLoop([&](auto) {
     SDL_RenderClear(renderer);
+    imguiInterface->processInput();
     while (SDL_PollEvent(&event) != 0) {
       if (event.type == SDL_QUIT) { pf::MainLoop::Get()->stop(); }
-      imguiInterface->handleSDLEvent(event);
+      //imguiInterface->handleSDLEvent(event);
     }
     imguiInterface->render();
     SDL_UpdateWindowSurface(window);
