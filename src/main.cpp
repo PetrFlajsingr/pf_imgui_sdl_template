@@ -78,17 +78,14 @@ int main(int argc, char *argv[]) {
 
   auto imguiInterface = std::make_unique<ImGuiSDLInterface>(
       ImGuiSDLConfig{.imgui = {.flags = pf::ui::ig::ImGuiConfigFlags::DockingEnable,
-                               .config = *config["imgui"].as_table(),
-                               .iconFontDirectory = *(*(config["imgui"].as_table()))["path_icons"].value<std::string>(),
-                               .enabledIconPacks = IconPack::ForkAwesome},
+                               .config = *config["imgui"].as_table()},
                      .windowHandle = window,
                      .renderer = renderer});
 
   auto &uiWindow = imguiInterface->createWindow(uniqueId(), "Window");
   uiWindow.createChild(Button::Config{.name = uniqueId(), .label = "Button", .size = Size::Auto()})
       .addClickListener([&] {
-        [[maybe_unused]] auto &a = imguiInterface->getNotificationManager().createNotification(
-            NotificationType::Info, uniqueId(), "Button clicked");
+        [[maybe_unused]] auto &a = imguiInterface->getNotificationManager().createNotification(uniqueId(), "Button clicked");
       });
   uiWindow.createChild(DragInput<float>::Config{.name = uniqueId(),
                                                 .label = "Float",
