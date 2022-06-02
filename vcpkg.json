@@ -4,7 +4,7 @@
   "dependencies": [
     {
       "name": "pf-common",
-      "version>=": "1.2.2"
+      "version>=": "1.2.3"
     },
     {
       "name": "pf-mainloop",
@@ -12,7 +12,7 @@
     },
     {
       "name": "pf-imgui",
-      "version>=": "0.8.2"
+      "version>=": "0.8.3"
     },
     {
       "name": "spdlog",
@@ -24,7 +24,7 @@
     },
     {
       "name": "sdl2",
-      "version>=": "2.0.20"
+      "version>=": "2.0.22"
     }
   ],
   "builtin-baseline": "bae8f8c7d837c631ca72daec4b14e243824135a5"
